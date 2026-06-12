@@ -1,4 +1,4 @@
-﻿namespace Dotnet.Elevator.Application.Tests;
+﻿namespace ElevatorSim.Console.Tests;
 
 public class UnitTest1
 {
