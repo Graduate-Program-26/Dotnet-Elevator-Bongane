@@ -1,10 +1,11 @@
 using ElevatorSim.Domain.Enums;
+using ElevatorSim.Domain.Models;
 
 namespace ElevatorSim.Domain.Entities;
 
 public class Passenger
 {
-    public int FloorNumber { get; set; }
+    public int FloorNumber { get; init; }
 
     public Passenger(int floorNumber)
     {
@@ -12,8 +13,8 @@ public class Passenger
     }
     
     // Passenger should call the elevator
-    public void CallElevator()
+    public FloorRequest RequestElevator()
     {
-        
+        return new FloorRequest(FloorNumber);
     }
 }
