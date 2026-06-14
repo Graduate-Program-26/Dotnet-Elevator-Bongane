@@ -1,4 +1,4 @@
-namespace ElevatorSim.Domain.Elevators;
+namespace ElevatorSim.Domain.Enums;
 
 public enum ElevatorState
 {

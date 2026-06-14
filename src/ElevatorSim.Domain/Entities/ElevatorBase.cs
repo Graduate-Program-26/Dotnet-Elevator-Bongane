@@ -1,4 +1,7 @@
-namespace ElevatorSim.Domain.Elevators;
+using ElevatorSim.Domain.Interfaces;
+using ElevatorSim.Domain.Enums;
+
+namespace ElevatorSim.Domain.Entities;
 
 public abstract class ElevatorBase : IElevator
 {
