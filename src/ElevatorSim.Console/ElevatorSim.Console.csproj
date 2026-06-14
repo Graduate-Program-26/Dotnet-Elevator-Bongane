@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ElevatorSim.Application\ElevatorSim.Application.csproj" />
     <ProjectReference Include="..\ElevatorSim.Infrastructure\ElevatorSim.Infrastructure.csproj" />
+    <ProjectReference Include="..\ElevatorSim.Domain\ElevatorSim.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
