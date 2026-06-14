@@ -4,8 +4,9 @@ namespace ElevatorSim.Domain.Interfaces;
 
 public interface IElevator
 {
-    int Id { get; }
-    int Floor { get; }
+    int FloorNumber { get; }
     ElevatorState State { get; }
     ElevatorDirection Direction { get; }
+    int MaxFloor { get; }
+    int MinFloor { get; }
 }
