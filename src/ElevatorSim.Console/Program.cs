@@ -1,12 +1,13 @@
 ﻿using ElevatorSim.Domain.Entities;
 using ElevatorSim.Domain.Interfaces;
 
-// Mock elevator
-IElevator elevator = new PassengerElevator();
-
-
 const int minFloor = 1;
 const int maxFloor = 10;
+const int maxNumberOfPeople = 10;
+
+// Mock elevator
+IElevator elevator = new PassengerElevator(minFloor,maxFloor,maxNumberOfPeople);
+
 
 // TODO: A main loop
 
