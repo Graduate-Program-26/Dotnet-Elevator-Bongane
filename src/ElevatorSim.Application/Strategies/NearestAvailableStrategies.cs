@@ -5,51 +5,35 @@ namespace ElevatorSim.Application.Strategies;
 
 public class NearestAvailableStrategies : IDispatchStrategy
 {
-    public List<IElevator> Elevators { get; } = new List<IElevator>();
-    // Limit the number of floors
-    public Dictionary<int, Queue<FloorRequest>> FloorRequestsPerFloor = new Dictionary<int, Queue<FloorRequest>>();
-    public Queue<FloorRequest> FloorRequests { get; }
-
-    public void AddElevators(IElevator elevator)
-    {
-        Elevators.Add(elevator);
-    }
-
-    public void AddFloorRequest(FloorRequest floorRequest)
-    {
-        // Get specific floor and append floor request
-        if (FloorRequestsPerFloor.TryGetValue(floorRequest.FloorNumber, out var floorRequests))
-        {
-            floorRequests.Enqueue(floorRequest);
-        }
-        else // If there are no requests on that floor create one
-        {
-            var newQueue = new Queue<FloorRequest>();
-            newQueue.Enqueue(floorRequest);
-            FloorRequestsPerFloor.Add(floorRequest.FloorNumber, newQueue);
-        }
-    }
     
-    public IElevator DispatchElevator(FloorRequest floorRequest)
+    public IElevator DispatchElevator(FloorRequest floorRequest, List<IElevator> elevators)
     {
-        if (Elevators.Count == 0)
+        if (elevators.Count == 0)
         {
-            throw new ArgumentNullException(nameof(Elevators),"No elevators available.");
+            throw new ArgumentNullException(nameof(elevators),"No elevators available.");
         }
         
+<<<<<<< Updated upstream
         var dispatchedElevator = Elevators.FirstOrDefault(elevator => elevator.FloorNumber == 1);
+=======
+        var dispatchedElevator = elevators.FirstOrDefault(elevator => elevator.CurrentFloorNumber == 1);
+>>>>>>> Stashed changes
         
         if (dispatchedElevator == null)
         {
             throw new ArgumentNullException(nameof(dispatchedElevator),"No elevator could be dispatched at the moment.");
         }
 
+<<<<<<< Updated upstream
         var orderdElevators = Elevators.OrderBy(elevator => elevator.FloorNumber);
+=======
+        var orderdElevators = elevators.OrderBy(elevator => elevator.CurrentFloorNumber);
+>>>>>>> Stashed changes
         
         // Determine which is the closest elevator.
         IElevator closestElevator;
         int distanceBetween = 0;
-        foreach (var elevator in Elevators)
+        foreach (var elevator in elevators)
         {
             // First determine the distance between the two
             if (distanceBetween < elevator.FloorNumber - floorRequest.FloorNumber)
