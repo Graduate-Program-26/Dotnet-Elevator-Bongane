@@ -53,4 +53,45 @@ public class PassengerElevatorTests
         // No exception thrown
         Assert.Null(exception);   
     }
+    
+    [Fact]
+    public void OffLoad_RemovesLoadFromElevator()
+    {
+        int minFloor = 0;
+        int maxFloor = 10;
+        int maxNumberOfPeople = 10;
+        int floorNumber = 1;
+        PassengerElevator elevator = new(minFloor, maxFloor, maxNumberOfPeople);
+        Passenger passenger = new Passenger(2);
+        elevator.AddLoad(passenger);
+
+        elevator.OffLoad(passenger);
+        
+        Assert.Empty(elevator.Passengers);
+    }
+    
+    [Fact]
+    public void OffLoad_ThrowsWhenPassengerNotPresent()
+    {
+        var elevator = new PassengerElevator(0, 10, 10);
+        var passenger = new Passenger(2);
+       
+        Assert.Throws<InvalidOperationException>(() => elevator.OffLoad(passenger));
+    }
+    
+    [Fact]
+    public void OffLoad_DecreasesPassengerCount()
+    {
+        var elevator = new PassengerElevator(0, 10, 10);
+        var first = new Passenger(2);
+        var second = new Passenger(3);
+        elevator.AddLoad(first);
+        elevator.AddLoad(second);
+
+        elevator.OffLoad(first);
+
+        Assert.Single(elevator.Passengers);              
+        Assert.Contains(second, elevator.Passengers);    
+        Assert.DoesNotContain(first, elevator.Passengers);
+    }
 }

@@ -31,4 +31,18 @@ public class PassengerElevator : ElevatorBase
         
         Passengers.Add(newPassenger);
     }
+
+    public override void OffLoad(ILoad load)
+    {
+        // Check if load/passenger exists.
+        var passenger = (Passenger)load;
+
+        var offLoadedPassenger = Passengers.FirstOrDefault(p => p.Id == passenger.Id);
+        if (offLoadedPassenger == null)
+        {
+            throw new InvalidOperationException("Passenger is not on elevator.");
+        }
+
+        Passengers.Remove(offLoadedPassenger);
+    }
 }

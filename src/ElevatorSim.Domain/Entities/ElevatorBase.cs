@@ -12,6 +12,7 @@ public abstract class ElevatorBase : IElevator,
     public ElevatorDirection Direction { get; private set; }
     public int MinFloor { get; init; }
     public abstract void AddLoad(ILoad load);
+    public abstract void OffLoad(ILoad load);
 
     public int MaxFloor { get; init; }
     

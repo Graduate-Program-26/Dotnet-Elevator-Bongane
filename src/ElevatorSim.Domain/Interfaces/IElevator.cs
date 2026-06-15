@@ -10,4 +10,5 @@ public interface IElevator
     int MaxFloor { get; }
     int MinFloor { get; }
     public void AddLoad(ILoad load);
+    public void OffLoad(ILoad load);
 }
