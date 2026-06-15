@@ -7,7 +7,7 @@ public abstract class ElevatorBase : IElevator,
     IEntity
 {
     public Guid Id { get; } = new Guid();
-    public int FloorNumber { get; private set; }
+    public int CurrentFloorNumber { get; private set; }
     public ElevatorState State { get; private set; }
     public ElevatorDirection Direction { get; private set; }
     public int MinFloor { get; init; }
@@ -20,7 +20,7 @@ public abstract class ElevatorBase : IElevator,
         ElevatorState state = ElevatorState.Stationary, 
         ElevatorDirection direction = ElevatorDirection.Idle)
     {
-        FloorNumber = floorNumber;
+        CurrentFloorNumber = floorNumber;
         MinFloor = minFloor;
         MaxFloor = maxFloor;
         State = state;

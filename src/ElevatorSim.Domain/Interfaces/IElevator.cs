@@ -4,7 +4,7 @@ namespace ElevatorSim.Domain.Interfaces;
 
 public interface IElevator
 {
-    int FloorNumber { get; }
+    int CurrentFloorNumber { get; }
     ElevatorState State { get; }
     ElevatorDirection Direction { get; }
     int MaxFloor { get; }
