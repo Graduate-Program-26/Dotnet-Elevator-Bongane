@@ -1,4 +1,5 @@
-﻿using ElevatorSim.Domain.Entities;
+﻿using ElevatorSim.Application.Strategies;
+using ElevatorSim.Domain.Entities;
 using ElevatorSim.Domain.Interfaces;
 
 const int minFloor = 1;
@@ -15,7 +16,8 @@ int passengerFloorNumber = GetPassengerFloorNumber();
 // Mock passenger
 Passenger passenger = new Passenger(passengerFloorNumber);
 // Call elevator
-passenger.CallElevator();
+IDispatchStrategy dispatchStrategy = new NearestAvailableStrategies();
+passenger.RequestElevator();
 
 
 static int GetPassengerFloorNumber()
