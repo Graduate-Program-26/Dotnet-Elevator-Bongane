@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ElevatorSim.Application\ElevatorSim.Application.csproj" />
     <ProjectReference Include="..\ElevatorSim.Infrastructure\ElevatorSim.Infrastructure.csproj" />
+    <ProjectReference Include="..\ElevatorSim.Domain\ElevatorSim.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,6 +11,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
 </Project>
