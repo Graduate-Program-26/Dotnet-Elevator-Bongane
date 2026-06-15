@@ -1,6 +1,6 @@
 using ElevatorSim.Domain.Entities;
+using ElevatorSim.Domain.Enums;
 using ElevatorSim.Domain.Exceptions;
-using ElevatorSim.Domain.Interfaces;
 
 namespace ElevatorSim.Domain.Tests;
 
@@ -60,9 +60,9 @@ public class PassengerElevatorTests
         int minFloor = 0;
         int maxFloor = 10;
         int maxNumberOfPeople = 10;
-        int floorNumber = 1;
+        int floorNumber = 2;
         PassengerElevator elevator = new(minFloor, maxFloor, maxNumberOfPeople);
-        Passenger passenger = new Passenger(2);
+        Passenger passenger = new Passenger(floorNumber);
         elevator.AddLoad(passenger);
 
         elevator.OffLoad(passenger);
@@ -94,4 +94,40 @@ public class PassengerElevatorTests
         Assert.Contains(second, elevator.Passengers);    
         Assert.DoesNotContain(first, elevator.Passengers);
     }
+
+    [Fact]
+    public void AddLoad_WhileElevatorIsMovingThrowException()
+    {
+        int minFloor = 0;
+        int maxFloor = 10;
+        int maxNumberOfPeople = 10;
+        int floorNumber = 2;
+        PassengerElevator elevator = new(minFloor, maxFloor, maxNumberOfPeople);
+        Passenger passenger = new Passenger(floorNumber);
+        
+        // Change the elevator state to closed doors
+        elevator.ChangeState(ElevatorState.Moving);
+        
+        // Check if you can add passenger while elevator is moving
+        Assert.Throws<ElevatorMovingException>(() => elevator.AddLoad(passenger));
+    }
+    
+    
+    [Fact]
+    public void AddLoad_WhileElevatorIsOutOfServiceThrowException()
+    {
+        int minFloor = 0;
+        int maxFloor = 10;
+        int maxNumberOfPeople = 10;
+        int floorNumber = 2;
+        PassengerElevator elevator = new(minFloor, maxFloor, maxNumberOfPeople);
+        Passenger passenger = new Passenger(floorNumber);
+        
+        // Change the elevator is out of service
+        elevator.ChangeState(ElevatorState.OutOfService);
+        
+        // Check if you can add passenger while elevator is out of service
+        Assert.Throws<ElevatorOutOfServiceException>(() => elevator.AddLoad(passenger));
+    }
+    
 }

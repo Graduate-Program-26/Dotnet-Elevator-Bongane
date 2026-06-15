@@ -11,4 +11,5 @@ public interface IElevator
     int MinFloor { get; }
     public void AddLoad(ILoad load);
     public void OffLoad(ILoad load);
+    public void ChangeState(ElevatorState state);
 }

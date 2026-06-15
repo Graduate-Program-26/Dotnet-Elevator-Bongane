@@ -1,3 +1,4 @@
+using ElevatorSim.Domain.Enums;
 using ElevatorSim.Domain.Exceptions;
 using ElevatorSim.Domain.Interfaces;
 
@@ -27,6 +28,16 @@ public class PassengerElevator : ElevatorBase
         if (Passengers.Count >= MaxNumberOfPeople)
         {
             throw new CapacityExceededException(this.Id, MaxNumberOfPeople);
+        }
+
+        if (this.State == ElevatorState.Moving)
+        {
+            throw new ElevatorMovingException(this.Id);
+        }
+
+        if (this.State == ElevatorState.OutOfService)
+        {
+            throw new ElevatorOutOfServiceException(this.Id);
         }
         
         Passengers.Add(newPassenger);

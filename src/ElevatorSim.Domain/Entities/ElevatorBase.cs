@@ -26,5 +26,10 @@ public abstract class ElevatorBase : IElevator,
         State = state;
         Direction = direction;
     }
+
+    public void ChangeState(ElevatorState state)
+    {
+        State = state;
+    }
     
 }
