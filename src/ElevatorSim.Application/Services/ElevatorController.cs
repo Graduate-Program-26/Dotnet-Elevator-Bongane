@@ -1,3 +1,4 @@
+using ElevatorSim.Domain.Exceptions;
 using ElevatorSim.Domain.Interfaces;
 using ElevatorSim.Domain.Models;
 
@@ -5,12 +6,24 @@ namespace ElevatorSim.Application.Services;
 
 public class ElevatorController
 {
+    private readonly int _maxNumberOfFloors;
+    private readonly int _maxNumberOfElevators;
     public List<IElevator> Elevators { get; } = new List<IElevator>();
     // Limit the number of floors
     public Dictionary<int, Queue<FloorRequest>> FloorRequestsPerFloor = new Dictionary<int, Queue<FloorRequest>>();
+
+    public ElevatorController(int maxNumberOfFloors, int maxNumberOfElevators)
+    {
+        _maxNumberOfFloors = maxNumberOfFloors;
+        _maxNumberOfElevators = maxNumberOfElevators ;
+    }
     
     public void AddElevators(IElevator elevator)
     {
+        if (Elevators.Count >= _maxNumberOfElevators)
+        {
+            throw new BuildingElevatorCapacityExceededException(_maxNumberOfElevators);
+        }
         Elevators.Add(elevator);
     }
     
