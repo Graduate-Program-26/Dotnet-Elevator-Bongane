@@ -11,6 +11,8 @@ public abstract class ElevatorBase : IElevator,
     public ElevatorState State { get; private set; }
     public ElevatorDirection Direction { get; private set; }
     public int MinFloor { get; init; }
+    public abstract void AddLoad(ILoad load);
+
     public int MaxFloor { get; init; }
     
     public ElevatorBase(int minFloor , int maxFloor, int floorNumber = 0, 
@@ -23,4 +25,5 @@ public abstract class ElevatorBase : IElevator,
         State = state;
         Direction = direction;
     }
+    
 }

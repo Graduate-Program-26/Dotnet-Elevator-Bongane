@@ -9,4 +9,5 @@ public interface IElevator
     ElevatorDirection Direction { get; }
     int MaxFloor { get; }
     int MinFloor { get; }
+    public void AddLoad(ILoad load);
 }
