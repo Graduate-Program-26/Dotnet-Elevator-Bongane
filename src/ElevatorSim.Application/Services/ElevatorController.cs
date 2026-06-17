@@ -70,7 +70,7 @@ public class ElevatorController
 
             if (nextBestChoice == null)
             {
-                return new ElevatorDispatchResult(0, numberOfPassengersReqestingElevator, "No elevators available");
+                return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
             }
             
             // Move elevator to desired floor
@@ -103,6 +103,6 @@ public class ElevatorController
         }
         passengersBoarded = fRequest.NumberOfPassengers - numberOfPassengersReqestingElevator;
 
-        return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator, "");
+        return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
     }
 }
