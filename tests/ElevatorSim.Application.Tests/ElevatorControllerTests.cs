@@ -89,4 +89,14 @@ public class ElevatorControllerTests
         Assert.Equal(10, result.PassengersBoarded);
         Assert.Equal(5, result.PassengersWaiting);
     }
+
+    [Fact]
+    public void DispatchElevator_FloorRequestIsWithinBuildingMaxFloors()
+    {
+        var evaluatorController = NewController(2) ;
+
+        Assert.Throws<FloorRequestExceedsAvailableFloorsException>(
+            () => evaluatorController.DispatchElevator(new FloorRequest(39, 5)));
+    }
+    
 }

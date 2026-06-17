@@ -72,7 +72,11 @@ public class ElevatorController
             {
                 return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
             }
-            
+
+            if (fRequest.FloorNumber > _maxNumberOfFloors)
+            {
+                throw new FloorRequestExceedsAvailableFloorsException(fRequest.FloorNumber, _maxNumberOfFloors);
+            }
             // Move elevator to desired floor
             nextBestChoice.ChangeState(ElevatorState.Moving);
             while (nextBestChoice.State == ElevatorState.Moving)
