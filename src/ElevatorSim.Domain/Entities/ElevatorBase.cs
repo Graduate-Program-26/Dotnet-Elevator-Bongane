@@ -42,16 +42,16 @@ public abstract class ElevatorBase : IElevator
     public void Step(int targetFloor)
     {
         if (State != ElevatorState.Moving)
-            return;                          // nothing to do if not moving
+            return;                          
 
         if (CurrentFloorNumber < targetFloor)
         {
-            CurrentFloorNumber++;            // move up one floor
+            CurrentFloorNumber++;            
             this.Direction = ElevatorDirection.Up;
         }
         else if (CurrentFloorNumber > targetFloor)
         {
-            CurrentFloorNumber--;            // move down one floor
+            CurrentFloorNumber--;           
             this.Direction = ElevatorDirection.Down;
         }
         this.ShowStatus();
