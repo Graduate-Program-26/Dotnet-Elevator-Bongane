@@ -100,8 +100,8 @@ public class ElevatorController
             Console.WriteLine($"Close elevator {nextBestChoice.Id} doors");
             totalCapacityAvailable = Elevators.Sum(elevator => elevator.CurrentCapacity);
 
+            passengersBoarded = fRequest.NumberOfPassengers - numberOfPassengersReqestingElevator;
         }
-        passengersBoarded = fRequest.NumberOfPassengers - numberOfPassengersReqestingElevator;
 
         return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
     }

@@ -17,7 +17,9 @@ public class NearestAvailableStrategies : IDispatchStrategy
         int floorRequestNumber = floorRequest.FloorNumber;
         
         // Determine which is the closest elevator.
-        var nextBestChoice = elevators.Where(elevator => elevator.CurrentCapacity != 0).FirstOrDefault();
+        var nextBestChoice = elevators
+            .Where(elevator => elevator.CurrentCapacity > 0)
+            .FirstOrDefault(elevator => elevator.State != ElevatorState.Moving);
         // If all elevators are full
         if (nextBestChoice == null)
         {

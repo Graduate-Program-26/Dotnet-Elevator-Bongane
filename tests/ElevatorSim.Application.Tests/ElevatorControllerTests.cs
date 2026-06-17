@@ -2,6 +2,7 @@ using ElevatorSim.Application.Models;
 using ElevatorSim.Application.Services;
 using ElevatorSim.Application.Strategies;
 using ElevatorSim.Domain.Entities;
+using ElevatorSim.Domain.Enums;
 using ElevatorSim.Domain.Exceptions;
 using ElevatorSim.Domain.Interfaces;
 using ElevatorSim.Domain.Models;
@@ -33,10 +34,10 @@ public class ElevatorControllerTests
     [Fact]
     public void AddElevator_ThrowsWhenExceedingMaxElevators()
     {
-        var controller = NewController(MaxElevators);  
+        var elevatorController = NewController(MaxElevators);  
 
         Assert.Throws<BuildingElevatorCapacityExceededException>(
-            () => controller.AddElevators(NewElevator()));
+            () => elevatorController.AddElevators(NewElevator()));
     }
 
     [Fact]
@@ -72,6 +73,20 @@ public class ElevatorControllerTests
         ElevatorDispatchResult result = elevatorController.DispatchElevator(request);
         Assert.Equal(20, result.PassengersBoarded);
         Assert.Equal(5, result.PassengersWaiting);
-        
+    }
+
+    [Fact]
+    public void DispatchElevator_CannotDispatchMovingElevator()
+    {
+        var elevatorController = NewController(1);
+        var request = new FloorRequest(5, 15);
+
+        var elevator = new PassengerElevator(MinFloor, MaxFloor, MaxPeople, request.FloorNumber);
+        elevator.ChangeState(ElevatorState.Moving);
+        elevatorController.AddElevators(elevator);
+
+        ElevatorDispatchResult result = elevatorController.DispatchElevator(request);
+        Assert.Equal(10, result.PassengersBoarded);
+        Assert.Equal(5, result.PassengersWaiting);
     }
 }

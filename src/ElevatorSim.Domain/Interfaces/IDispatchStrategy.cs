@@ -4,5 +4,5 @@ namespace ElevatorSim.Domain.Interfaces;
 
 public interface IDispatchStrategy
 {
-    public IElevator DispatchElevator(FloorRequest floorRequest, List<IElevator> elevators);
+    public IElevator? DispatchElevator(FloorRequest floorRequest, List<IElevator> elevators);
 }
