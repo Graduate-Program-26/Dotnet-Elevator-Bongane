@@ -10,7 +10,8 @@ public class PassengerElevator : ElevatorBase
     public List<Passenger> Passengers { get; private set; } = new List<Passenger>();
 
     public PassengerElevator( int minFloor, int maxFloor, 
-        int maxNumberOfPeople) : base(minFloor, maxFloor)
+        int maxNumberOfPeople, int floorNumber = 0) : 
+        base(minFloor, maxFloor, maxNumberOfPeople, floorNumber)
     {
         MaxNumberOfPeople = maxNumberOfPeople;
     }

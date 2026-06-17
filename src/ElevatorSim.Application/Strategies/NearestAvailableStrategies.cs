@@ -1,3 +1,4 @@
+using ElevatorSim.Domain.Enums;
 using ElevatorSim.Domain.Interfaces;
 using ElevatorSim.Domain.Models;
 
@@ -5,61 +6,48 @@ namespace ElevatorSim.Application.Strategies;
 
 public class NearestAvailableStrategies : IDispatchStrategy
 {
-    public List<IElevator> Elevators { get; } = new List<IElevator>();
-    // Limit the number of floors
-    public Dictionary<int, Queue<FloorRequest>> FloorRequestsPerFloor = new Dictionary<int, Queue<FloorRequest>>();
-    public Queue<FloorRequest> FloorRequests { get; }
-
-    public void AddElevators(IElevator elevator)
-    {
-        Elevators.Add(elevator);
-    }
-
-    public void AddFloorRequest(FloorRequest floorRequest)
-    {
-        // Get specific floor and append floor request
-        if (FloorRequestsPerFloor.TryGetValue(floorRequest.FloorNumber, out var floorRequests))
-        {
-            floorRequests.Enqueue(floorRequest);
-        }
-        else // If there are no requests on that floor create one
-        {
-            var newQueue = new Queue<FloorRequest>();
-            newQueue.Enqueue(floorRequest);
-            FloorRequestsPerFloor.Add(floorRequest.FloorNumber, newQueue);
-        }
-    }
     
-    public IElevator DispatchElevator(FloorRequest floorRequest)
+    public IElevator? DispatchElevator(FloorRequest floorRequest, List<IElevator> elevators)
     {
-        if (Elevators.Count == 0)
+        if (elevators.Count == 0)
         {
-            throw new ArgumentNullException(nameof(Elevators),"No elevators available.");
+            throw new ArgumentNullException(nameof(elevators),"No elevators available.");
         }
         
-        var dispatchedElevator = Elevators.FirstOrDefault(elevator => elevator.FloorNumber == 1);
-        
-        if (dispatchedElevator == null)
-        {
-            throw new ArgumentNullException(nameof(dispatchedElevator),"No elevator could be dispatched at the moment.");
-        }
-
-        var orderdElevators = Elevators.OrderBy(elevator => elevator.FloorNumber);
+        int floorRequestNumber = floorRequest.FloorNumber;
         
         // Determine which is the closest elevator.
-        IElevator closestElevator;
-        int distanceBetween = 0;
-        foreach (var elevator in Elevators)
+        var nextBestChoice = elevators
+            .Where(elevator => elevator.CurrentCapacity > 0)
+            .FirstOrDefault(elevator => elevator.State != ElevatorState.Moving);
+        // If all elevators are full
+        if (nextBestChoice == null)
         {
-            // First determine the distance between the two
-            if (distanceBetween < elevator.FloorNumber - floorRequest.FloorNumber)
+            return null;
+        }
+        
+        int minimumFloorDistance = Math.Abs(nextBestChoice.CurrentFloorNumber - floorRequestNumber);
+        int highestCurrentCapacityElevator = nextBestChoice.CurrentCapacity;
+        // Selecting the best elevator
+        foreach (var elevator in elevators)
+        {
+            if (Math.Abs(elevator.CurrentFloorNumber - floorRequestNumber) <
+                minimumFloorDistance // Check which is the closest elevator by distance
+                && elevator.CurrentCapacity >=
+                highestCurrentCapacityElevator // Chooses the last elevator on the list which satisfies all conditions
+                && elevator.State == ElevatorState.Stationary
+               )
             {
-              distanceBetween = elevator.FloorNumber - floorRequest.FloorNumber;
-              closestElevator = elevator;
+                nextBestChoice = elevator;
+                minimumFloorDistance = Math.Abs(nextBestChoice.CurrentFloorNumber - floorRequestNumber);
+                highestCurrentCapacityElevator = nextBestChoice.CurrentCapacity;
             }
         }
         
+        Console.WriteLine(
+            $"Dispatching elevator {nextBestChoice.Id} on Floor {nextBestChoice.CurrentFloorNumber} " +
+            $"to Floor {floorRequest.FloorNumber}.");
         
-        return dispatchedElevator;
+        return nextBestChoice;
     }
 }
