@@ -21,6 +21,7 @@ public class ElevatorController
     {
         _maxNumberOfFloors = maxNumberOfFloors;
         _maxNumberOfElevators = maxNumberOfElevators;
+        ValidateElevatorCapacity(elevator);
         Elevators.Add(elevator);
         _strategy = strategy;
     }
@@ -29,6 +30,7 @@ public class ElevatorController
     {
         _maxNumberOfFloors = maxNumberOfFloors;
         _maxNumberOfElevators = maxNumberOfElevators;
+        elevators.ForEach(ValidateElevatorCapacity);
         Elevators.AddRange(elevators);
         _strategy = strategy;
     }
@@ -39,8 +41,17 @@ public class ElevatorController
         {
             throw new BuildingElevatorCapacityExceededException(_maxNumberOfElevators);
         }
-
+        
+        ValidateElevatorCapacity(elevator);
         Elevators.Add(elevator);
+    }
+
+    private void ValidateElevatorCapacity(IElevator elevator)
+    {
+        if (elevator.MaxFloor > _maxNumberOfFloors)
+        {
+            throw new ElevatorExceedsAvailableFloorsException(elevator.MaxFloor, _maxNumberOfFloors);
+        }
     }
 
     public void AddFloorRequest(FloorRequest floorRequest)
