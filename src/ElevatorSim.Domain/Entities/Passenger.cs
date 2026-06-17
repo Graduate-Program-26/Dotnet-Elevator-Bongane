@@ -15,10 +15,10 @@ public class Passenger : IEntity, ILoad
     }
     
     // Passenger should call the elevator
-    public FloorRequest RequestElevator()
-    {
-        return new FloorRequest(FloorNumber);
-    }
+    // public FloorRequest RequestElevator()
+    // {
+    //     return new FloorRequest(FloorNumber);
+    // }
 
     public Guid Id { get; }
 }
