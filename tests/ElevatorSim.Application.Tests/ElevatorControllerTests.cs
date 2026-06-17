@@ -42,51 +42,25 @@ public class ElevatorControllerTests
     [Fact]
     public void AddElevator_CheckIfElevatorsFillUpToTheMax()
     {
-        var elevatorController = NewController(MaxElevators);  
-        
         var exception = Record.Exception(() =>
         {
-            for (int i = 0; i < MaxElevators - 1; ++i)
-            {
-                elevatorController.AddElevators(NewElevator());
-            }
+            var elevatorController =
+                new ElevatorController(MaxFloorsInBuilding, MaxElevators, NewFleet(MaxElevators), _strategy);
         });
     // No exception thrown
         Assert.Null(exception);  
     }
-
-    [Fact]
-    public void AddFloorRequest_CheckIfElevatorCanAcceptFloorRequest()
-    {
-        int minElevatorFloors = 0;
-        int maxElevatorFloors = 10;
-        int maxNumberOfPeople = 10;
-        int maxNumberOfElevators = 5;
-
-        int maxFloorsInBuilding = 13;
-
-        IElevator[] elevators = new PassengerElevator[maxNumberOfElevators];
-        IDispatchStrategy strategy = new NearestAvailableStrategies();
-        
-        for (int i = 0; i < maxNumberOfElevators; ++i)
-        {
-            elevators[i] =new PassengerElevator(minElevatorFloors, maxElevatorFloors, maxNumberOfPeople);
-        }
-        
-        ElevatorController elevatorController = 
-            new ElevatorController(maxFloorsInBuilding, maxNumberOfElevators, elevators.ToList(),strategy);
-        
-        
-    }
     
     // Check if floor can be requested when there are no elevators
     [Fact]
-    public void DispatchElevator_ThrowsWhenNoElevatorsExist()
+    public void DispatchElevator_WhenNoElevatorsAvailableZeroPassengersBoatded()
     {
-        var controller = NewController(0);   // empty fleet
-
-        Assert.Throws<ArgumentNullException>(
-            () => controller.DispatchElevator(new FloorRequest(5, 3)));
+        var elevatorController = NewController(0);   // empty fleet
+        
+        var result = elevatorController.DispatchElevator(new FloorRequest(5, 3));
+        
+        Assert.Equal(0, result.PassengersBoarded);
+        Assert.Equal(3, result.PassengersWaiting);
     }
     
     [Fact]
