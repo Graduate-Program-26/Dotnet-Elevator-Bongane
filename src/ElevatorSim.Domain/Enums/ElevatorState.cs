@@ -1,6 +1,22 @@
 namespace ElevatorSim.Domain.Enums;
 
+/// <summary>
+/// Represents the operational state of an elevator at a point in time.
+/// </summary>
 public enum ElevatorState
 {
-    Stationary, Moving, DoorsOpen, OutOfService, DoorsClosed
+    /// <summary>The elevator is stopped and idle at a floor.</summary>
+    Stationary,
+
+    /// <summary>The elevator is travelling between floors.</summary>
+    Moving,
+
+    /// <summary>The elevator doors are open and passengers may board or alight.</summary>
+    DoorsOpen,
+
+    /// <summary>The elevator is taken out of service and unavailable for dispatch.</summary>
+    OutOfService,
+
+    /// <summary>The elevator doors have closed after a boarding cycle.</summary>
+    DoorsClosed
 }
