@@ -8,10 +8,10 @@ public enum ElevatorState
     /// <summary>The elevator is stopped and idle at a floor.</summary>
     Stationary,
 
-    /// <summary>The elevator is travelling between floors.</summary>
+    /// <summary>The elevator is traveling between floors.</summary>
     Moving,
 
-    /// <summary>The elevator doors are open and passengers may board or alight.</summary>
+    /// <summary>The elevator doors are open and passengers may board.</summary>
     DoorsOpen,
 
     /// <summary>The elevator is taken out of service and unavailable for dispatch.</summary>
