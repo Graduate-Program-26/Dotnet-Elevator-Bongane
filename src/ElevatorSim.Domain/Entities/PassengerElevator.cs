@@ -4,57 +4,25 @@ using ElevatorSim.Domain.Interfaces;
 
 namespace ElevatorSim.Domain.Entities;
 
+/// <summary>
+/// An elevator that carries <see cref="Passenger"/> instances.
+/// Enforces capacity, movement, and service-state rules on boarding.
+/// </summary>
 public class PassengerElevator : ElevatorBase
 {
-    private int MaxNumberOfPeople { get; init; }
-    public List<Passenger> Passengers { get; private set; } = new List<Passenger>();
-
-    public PassengerElevator( int minFloor, int maxFloor, 
-        int maxNumberOfPeople, int floorNumber = 0) : 
+   
+    /// <summary>
+    /// Initialises a new <see cref="PassengerElevator"/>.
+    /// </summary>
+    /// <param name="minFloor">The lowest floor this elevator services.</param>
+    /// <param name="maxFloor">The highest floor this elevator services.</param>
+    /// <param name="maxNumberOfPeople">Maximum passenger capacity.</param>
+    /// <param name="floorNumber">Starting floor; defaults to 0.</param>
+    public PassengerElevator(int minFloor, int maxFloor,
+        int maxNumberOfPeople, int floorNumber = 0) :
         base(minFloor, maxFloor, maxNumberOfPeople, floorNumber)
     {
-        MaxNumberOfPeople = maxNumberOfPeople;
+       
     }
-
-    public override void AddLoad(ILoad load)
-    {
-        var newPassenger = (Passenger)load;
-        // Check if passenger exists first
-        if (Passengers.Exists(passenger => passenger.Id == newPassenger.Id))
-        {
-            Console.WriteLine("Passenger already in elevator.");
-            return;
-        }
-
-        if (Passengers.Count >= MaxNumberOfPeople)
-        {
-            throw new CapacityExceededException(this.Id, MaxNumberOfPeople);
-        }
-
-        if (this.State == ElevatorState.Moving)
-        {
-            throw new ElevatorMovingException(this.Id);
-        }
-
-        if (this.State == ElevatorState.OutOfService)
-        {
-            throw new ElevatorOutOfServiceException(this.Id);
-        }
-        
-        Passengers.Add(newPassenger);
-    }
-
-    public override void OffLoad(ILoad load)
-    {
-        // Check if load/passenger exists.
-        var passenger = (Passenger)load;
-
-        var offLoadedPassenger = Passengers.FirstOrDefault(p => p.Id == passenger.Id);
-        if (offLoadedPassenger == null)
-        {
-            throw new InvalidOperationException("Passenger is not on elevator.");
-        }
-
-        Passengers.Remove(offLoadedPassenger);
-    }
+    
 }
