@@ -1,6 +1,7 @@
 using System.Threading;
 using ElevatorSim.Application.Interfaces;
 using ElevatorSim.Console.Rendering;
+using ElevatorSim.Domain.Enums;
 using ElevatorSim.Domain.Interfaces;
 
 namespace ElevatorSim.Console;
@@ -43,15 +44,23 @@ public class ConsoleProgress : IDispatchProgress
     }
 
     /// <inheritdoc/>
-    public void PassengersBoarded(Guid elevatorId, int count, int spacesLeft)
+    public void PassengersBoarded(Guid elevatorId, int passengersLeft, int spacesLeft)
     {
-        System.Console.WriteLine($"  +{count} boarded | {spacesLeft} space(s) remaining");
+        System.Console.WriteLine($"  +{passengersLeft} boarded | {spacesLeft} space(s) remaining");
     }
 
     /// <inheritdoc/>
-    public void ElevatorChangedState(Guid elevatorId)
+    public void ElevatorChangedState(Guid elevatorId, ElevatorState elevatorState)
     {
-        System.Console.WriteLine($"Open elevator {elevatorId} doors");
+        string message = elevatorState switch
+        {
+            ElevatorState.DoorsOpen => ($"Open elevator {elevatorId} doors,"),
+            ElevatorState.DoorsClosed => ($"Closed elevator {elevatorId} doors."),
+            ElevatorState.Moving => ($"Elevator is moving {elevatorId}."),
+            ElevatorState.OutOfService => $"Elevator {elevatorId} is out of date.",
+            ElevatorState.Stationary => $"Elevator {elevatorId} is stationary.",
+        };
+        System.Console.WriteLine(message);
     }
 
     private static string ShortId(Guid id) => id.ToString("N")[..8];
