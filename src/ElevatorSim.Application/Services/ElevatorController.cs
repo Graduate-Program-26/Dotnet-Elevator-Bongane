@@ -122,7 +122,7 @@ public class ElevatorController : IElevatorController
             }
 
             nextBestChoice.ChangeState(ElevatorState.Moving);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             while (nextBestChoice.State == ElevatorState.Moving)
             {
@@ -131,7 +131,7 @@ public class ElevatorController : IElevatorController
             }
 
             nextBestChoice.ChangeState(ElevatorState.DoorsOpen);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             while (nextBestChoice.CurrentCapacity > 0)
             {
@@ -143,7 +143,7 @@ public class ElevatorController : IElevatorController
             }
 
             nextBestChoice.ChangeState(ElevatorState.DoorsClosed);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             totalCapacityAvailable = Elevators.Sum(elevator => elevator.CurrentCapacity);
 
