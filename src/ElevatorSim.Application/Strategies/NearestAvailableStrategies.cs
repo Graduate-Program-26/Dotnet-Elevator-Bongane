@@ -4,37 +4,50 @@ using ElevatorSim.Domain.Models;
 
 namespace ElevatorSim.Application.Strategies;
 
+/// <summary>
+/// Dispatch strategy that selects the stationary elevator closest to the requested floor.
+/// When distance is equal, the elevator with greater remaining capacity is preferred.
+/// Moving or fully-loaded elevators are excluded from selection.
+/// </summary>
 public class NearestAvailableStrategies : IDispatchStrategy
 {
-    
+    /// <summary>
+    /// Selects the nearest available elevator for the given floor request.
+    /// </summary>
+    /// <param name="floorRequest">The floor and passenger count being requested.</param>
+    /// <param name="elevators">The fleet of elevators to evaluate.</param>
+    /// <returns>
+    /// The best <see cref="IElevator"/> candidate, or <see langword="null"/> if every elevator
+    /// is either moving or at full capacity.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="elevators"/> is empty.</exception>
     public IElevator? DispatchElevator(FloorRequest floorRequest, List<IElevator> elevators)
     {
         if (elevators.Count == 0)
         {
-            throw new ArgumentNullException(nameof(elevators),"No elevators available.");
+            throw new ArgumentNullException(nameof(elevators), "No elevators available.");
         }
-        
+
         int floorRequestNumber = floorRequest.FloorNumber;
-        
-        // Determine which is the closest elevator.
+
         var nextBestChoice = elevators
             .Where(elevator => elevator.CurrentCapacity > 0)
             .FirstOrDefault(elevator => elevator.State != ElevatorState.Moving);
-        // If all elevators are full
+
         if (nextBestChoice == null)
         {
             return null;
         }
-        
+
         int minimumFloorDistance = Math.Abs(nextBestChoice.CurrentFloorNumber - floorRequestNumber);
         int highestCurrentCapacityElevator = nextBestChoice.CurrentCapacity;
-        // Selecting the best elevator
+
         foreach (var elevator in elevators)
         {
             if (Math.Abs(elevator.CurrentFloorNumber - floorRequestNumber) <
-                minimumFloorDistance // Check which is the closest elevator by distance
+                minimumFloorDistance
                 && elevator.CurrentCapacity >=
-                highestCurrentCapacityElevator // Chooses the last elevator on the list which satisfies all conditions
+                highestCurrentCapacityElevator
                 && elevator.State == ElevatorState.Stationary
                )
             {
@@ -43,11 +56,7 @@ public class NearestAvailableStrategies : IDispatchStrategy
                 highestCurrentCapacityElevator = nextBestChoice.CurrentCapacity;
             }
         }
-        
-        Console.WriteLine(
-            $"Dispatching elevator {nextBestChoice.Id} on Floor {nextBestChoice.CurrentFloorNumber} " +
-            $"to Floor {floorRequest.FloorNumber}.");
-        
+
         return nextBestChoice;
     }
 }

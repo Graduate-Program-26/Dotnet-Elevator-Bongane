@@ -1,9 +1,16 @@
 namespace ElevatorSim.Domain.Exceptions;
 
+/// <summary>
+/// Thrown when an operation is attempted on an elevator that is currently in motion.
+/// </summary>
 public class ElevatorMovingException : Exception
 {
-    public ElevatorMovingException(Guid elevatorId) : base($"Elevator {elevatorId} is moving.")
+    /// <summary>
+    /// Initialises a new <see cref="ElevatorMovingException"/>.
+    /// </summary>
+    /// <param name="elevatorId">The identifier of the moving elevator.</param>
+    public ElevatorMovingException(Guid elevatorId)
+        : base($"Elevator {elevatorId} is moving.")
     {
-      
     }
 }
