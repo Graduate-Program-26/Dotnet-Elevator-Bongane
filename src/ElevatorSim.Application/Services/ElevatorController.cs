@@ -23,10 +23,7 @@ public class ElevatorController : IElevatorController
 
     /// <inheritdoc/>
     IReadOnlyList<IElevator> IElevatorController.Elevators => Elevators;
-
-    /// <summary>Gets the queue of pending floor requests, keyed by floor number.</summary>
-    public Dictionary<int, Queue<FloorRequest>> FloorRequestsPerFloor = new Dictionary<int, Queue<FloorRequest>>();
-
+    
     /// <summary>
     /// Initialises the controller with a single elevator.
     /// </summary>
@@ -87,24 +84,7 @@ public class ElevatorController : IElevatorController
         ValidateElevatorCapacity(elevator);
         Elevators.Add(elevator);
     }
-
-    /// <summary>
-    /// Enqueues a floor request so it can be replayed or audited.
-    /// </summary>
-    /// <param name="floorRequest">The request to enqueue.</param>
-    public void AddFloorRequest(FloorRequest floorRequest)
-    {
-        if (FloorRequestsPerFloor.TryGetValue(floorRequest.FloorNumber, out var floorRequests))
-        {
-            floorRequests.Enqueue(floorRequest);
-        }
-        else
-        {
-            var newQueue = new Queue<FloorRequest>();
-            newQueue.Enqueue(floorRequest);
-            FloorRequestsPerFloor.Add(floorRequest.FloorNumber, newQueue);
-        }
-    }
+    
 
     /// <summary>
     /// Dispatches one or more elevators to service the given floor request.
