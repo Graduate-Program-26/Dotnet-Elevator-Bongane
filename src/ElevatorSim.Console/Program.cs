@@ -31,3 +31,13 @@ services.AddSingleton<IDispatchProgress>(sp =>
     var controller = sp.GetRequiredService<IElevatorController>();
     return new ConsoleProgress(controller.Elevators);
 });
+
+services.AddSingleton<SimulationRunner>(sp => new SimulationRunner(
+    sp.GetRequiredService<IElevatorController>(),
+    sp.GetRequiredService<IDispatchProgress>(),
+    minFloor,
+    maxFloor));
+
+var provider = services.BuildServiceProvider();
+
+provider.GetRequiredService<SimulationRunner>().Run();
