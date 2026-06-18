@@ -1,3 +1,5 @@
+using ElevatorSim.Domain.Enums;
+
 namespace ElevatorSim.Application.Interfaces;
 
 /// <summary>
@@ -40,5 +42,6 @@ public interface IDispatchProgress
     /// Called when the elevator transitions to a new <see cref="ElevatorSim.Domain.Enums.ElevatorState"/>.
     /// </summary>
     /// <param name="elevatorId">The identifier of the elevator whose state changed.</param>
-    void ElevatorChangedState(Guid elevatorId);
+    /// /// <param name="elevatorState">The changed state of the elevator.</param>
+    public void ElevatorChangedState(Guid elevatorId, ElevatorState elevatorState);
 }
