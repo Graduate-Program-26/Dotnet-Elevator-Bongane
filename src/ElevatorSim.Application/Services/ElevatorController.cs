@@ -129,7 +129,7 @@ public class ElevatorController : IElevatorController
             while (nextBestChoice.State == ElevatorState.Moving)
             {
                 nextBestChoice.Step(fRequest.FloorNumber);
-                progress?.ElevatorMoved(nextBestChoice.Id, nextBestChoice.CurrentFloorNumber);
+                progress?.ElevatorMoved();
             }
 
             nextBestChoice.ChangeState(ElevatorState.DoorsOpen);
@@ -140,7 +140,7 @@ public class ElevatorController : IElevatorController
                 if (numberOfPassengersReqestingElevator <= 0)
                     break;
                 nextBestChoice.Board(1);
-                progress?.PassengersBoarded(nextBestChoice.Id, 1, nextBestChoice.CurrentCapacity);
+                progress?.PassengersBoarded(1, nextBestChoice.CurrentCapacity);
                 --numberOfPassengersReqestingElevator;
             }
 
