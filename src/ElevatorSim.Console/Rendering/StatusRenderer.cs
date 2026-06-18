@@ -30,8 +30,8 @@ public static class StatusRenderer
         System.Console.WriteLine();
     }
 
-    private static void SetColor(ElevatorState state) =>
-        System.Console.ForegroundColor = state switch
+    private static void SetColor(ElevatorState elevatorState) =>
+        System.Console.ForegroundColor = elevatorState switch
         {
             ElevatorState.Moving     => ConsoleColor.Yellow,
             ElevatorState.DoorsOpen  => ConsoleColor.Cyan,
