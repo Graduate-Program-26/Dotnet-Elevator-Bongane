@@ -26,15 +26,15 @@ services.AddSingleton<IElevatorController>(serviceProvider =>
     return new ElevatorController(maxFloor, maxElevators, fleet, strategy);
 });
 
-services.AddSingleton<IDispatchProgress>(sp =>
+services.AddSingleton<IDispatchProgress>(serviceProvider =>
 {
-    var controller = sp.GetRequiredService<IElevatorController>();
+    var controller = serviceProvider.GetRequiredService<IElevatorController>();
     return new ConsoleProgress(controller.Elevators);
 });
 
-services.AddSingleton<SimulationRunner>(sp => new SimulationRunner(
-    sp.GetRequiredService<IElevatorController>(),
-    sp.GetRequiredService<IDispatchProgress>(),
+services.AddSingleton<SimulationRunner>(serviceProvider => new SimulationRunner(
+    serviceProvider.GetRequiredService<IElevatorController>(),
+    serviceProvider.GetRequiredService<IDispatchProgress>(),
     minFloor,
     maxFloor));
 
