@@ -45,7 +45,7 @@ The console displays a live status panel showing every elevator's current floor,
 dotnet test
 ```
 
-All 17 tests should pass. Test projects:
+All 13 tests should pass. Test projects:
 
 | Project | Coverage |
 |---|---|
