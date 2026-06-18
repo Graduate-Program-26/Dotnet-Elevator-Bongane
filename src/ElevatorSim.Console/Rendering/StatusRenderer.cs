@@ -22,7 +22,7 @@ public static class StatusRenderer
         {
             SetColor(e.State);
             System.Console.WriteLine(
-                $"Elevator {e.Id.ToString("N")[..8]} | Floor {e.CurrentFloorNumber,2} | " +
+                $"Elevator {e.Id} | Floor {e.CurrentFloorNumber,2} | " +
                 $"{e.Direction,-6} | {e.State,-12} | " +
                 $"{e.CurrentCapacity}/{e.MaxCapacity}");
             System.Console.ResetColor();

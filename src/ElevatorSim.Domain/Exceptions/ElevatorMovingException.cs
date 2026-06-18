@@ -9,7 +9,7 @@ public class ElevatorMovingException : Exception
     /// Initialises a new <see cref="ElevatorMovingException"/>.
     /// </summary>
     /// <param name="elevatorId">The identifier of the moving elevator.</param>
-    public ElevatorMovingException(Guid elevatorId)
+    public ElevatorMovingException(int elevatorId)
         : base($"Elevator {elevatorId} is moving.")
     {
     }
