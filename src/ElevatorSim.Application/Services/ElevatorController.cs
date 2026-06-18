@@ -115,6 +115,8 @@ public class ElevatorController : IElevatorController
             {
                 return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
             }
+            
+            progress?.ElevatorDispatched(nextBestChoice.Id, nextBestChoice.CurrentFloorNumber, fRequest.FloorNumber);
 
             if (fRequest.FloorNumber > _maxNumberOfFloors)
             {
