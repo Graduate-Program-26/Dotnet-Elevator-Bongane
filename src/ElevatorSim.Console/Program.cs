@@ -26,4 +26,8 @@ services.AddSingleton<IElevatorController>(serviceProvider =>
     return new ElevatorController(maxFloor, maxElevators, fleet, strategy);
 });
 
-
+services.AddSingleton<IDispatchProgress>(sp =>
+{
+    var controller = sp.GetRequiredService<IElevatorController>();
+    return new ConsoleProgress(controller.Elevators);
+});
