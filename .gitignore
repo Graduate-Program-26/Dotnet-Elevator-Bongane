@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# miscallaneous files
+dotnet-elevator-rubric.md
+
 # User-specific files
 *.rsuser
 *.suo
