@@ -46,8 +46,10 @@ public class NearestAvailableStrategies : IDispatchStrategy
         {
             if (Math.Abs(elevator.CurrentFloorNumber - floorRequestNumber) <
                 minimumFloorDistance
-                && elevator.CurrentCapacity >=
+                && (elevator.CurrentCapacity >=
                 highestCurrentCapacityElevator
+                || elevator.CurrentCapacity != 0
+                )
                 && elevator.State == ElevatorState.Stationary
                )
             {

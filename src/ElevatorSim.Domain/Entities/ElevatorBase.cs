@@ -1,23 +1,25 @@
 using ElevatorSim.Domain.Interfaces;
 using ElevatorSim.Domain.Enums;
+using ElevatorSim.Domain.Exceptions;
 
 namespace ElevatorSim.Domain.Entities;
 
 /// <summary>
-/// Abstract base class for all elevator types.
+/// A Base class for all elevator types.
 /// Manages floor position, direction, state, and capacity; subclasses implement
 /// other operations.
 /// </summary>
-public abstract class ElevatorBase : IElevator
+public class ElevatorBase : IElevator
 {
+    private static int s_nextId;
     /// <inheritdoc/>
-    public Guid Id { get; } = Guid.NewGuid();
+    public int Id { get; } = Interlocked.Increment(ref s_nextId);
 
     /// <inheritdoc/>
-    public int CurrentFloorNumber { get; set; }
+    public int CurrentFloorNumber { get; private set; }
 
     /// <inheritdoc/>
-    public int CurrentCapacity { get; set; }
+    public int CurrentCapacity { get; private set; }
 
     /// <inheritdoc/>
     public int MaxCapacity { get; init; }
@@ -65,6 +67,21 @@ public abstract class ElevatorBase : IElevator
     /// <inheritdoc/>
     public void Board(int load)
     {
+        if (this.State == ElevatorState.Moving)
+        {
+            throw new ElevatorMovingException(this.Id);
+        }
+
+        if (this.State == ElevatorState.OutOfService)
+        {
+            throw new ElevatorOutOfServiceException(this.Id);
+        }
+        
+        if (load > this.CurrentCapacity)
+        {
+            throw new CapacityExceededException(this.Id,this.CurrentCapacity);
+        }
+        
         this.CurrentCapacity -= load;
     }
 
@@ -74,6 +91,16 @@ public abstract class ElevatorBase : IElevator
         if (State != ElevatorState.Moving)
             return;
 
+        if (targetFloor > MaxFloor)
+        {
+            throw new ElevatorExceedsAvailableFloorsException(MaxFloor, MaxFloor);
+        }
+        
+        if (targetFloor < MinFloor)
+        {
+            throw new ElevatorExceedsAvailableFloorsException(MinFloor, MaxFloor);
+        }
+        
         if (CurrentFloorNumber < targetFloor)
         {
             CurrentFloorNumber++;

@@ -9,7 +9,7 @@ public class ElevatorOutOfServiceException : Exception
     /// Initialises a new <see cref="ElevatorOutOfServiceException"/>.
     /// </summary>
     /// <param name="elevatorId">The identifier of the out-of-service elevator.</param>
-    public ElevatorOutOfServiceException(Guid elevatorId)
+    public ElevatorOutOfServiceException(int elevatorId)
         : base($"Elevator {elevatorId} is out of service.")
     {
     }

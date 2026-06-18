@@ -115,6 +115,8 @@ public class ElevatorController : IElevatorController
             {
                 return new ElevatorDispatchResult(passengersBoarded, numberOfPassengersReqestingElevator);
             }
+            
+            progress?.ElevatorDispatched(nextBestChoice.Id, nextBestChoice.CurrentFloorNumber, fRequest.FloorNumber);
 
             if (fRequest.FloorNumber > _maxNumberOfFloors)
             {
@@ -122,28 +124,28 @@ public class ElevatorController : IElevatorController
             }
 
             nextBestChoice.ChangeState(ElevatorState.Moving);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             while (nextBestChoice.State == ElevatorState.Moving)
             {
                 nextBestChoice.Step(fRequest.FloorNumber);
-                progress?.ElevatorMoved(nextBestChoice.Id, nextBestChoice.CurrentFloorNumber);
+                progress?.ElevatorMoved();
             }
 
             nextBestChoice.ChangeState(ElevatorState.DoorsOpen);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             while (nextBestChoice.CurrentCapacity > 0)
             {
                 if (numberOfPassengersReqestingElevator <= 0)
                     break;
                 nextBestChoice.Board(1);
-                progress?.PassengersBoarded(nextBestChoice.Id, 1, nextBestChoice.CurrentCapacity);
+                progress?.PassengersBoarded(1, nextBestChoice.CurrentCapacity);
                 --numberOfPassengersReqestingElevator;
             }
 
             nextBestChoice.ChangeState(ElevatorState.DoorsClosed);
-            progress?.ElevatorChangedState(nextBestChoice.Id);
+            progress?.ElevatorChangedState(nextBestChoice.Id, nextBestChoice.State);
 
             totalCapacityAvailable = Elevators.Sum(elevator => elevator.CurrentCapacity);
 

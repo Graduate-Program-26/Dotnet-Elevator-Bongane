@@ -6,5 +6,5 @@ namespace ElevatorSim.Domain.Interfaces;
 public interface IEntity
 {
     /// <summary>Gets the unique identifier for this entity.</summary>
-    public Guid Id { get; }
+    public int Id { get; }
 }

@@ -6,7 +6,7 @@ namespace ElevatorSim.Domain.Exceptions;
 public class CapacityExceededException : Exception
 {
     /// <summary>Gets the identifier of the elevator that is at capacity.</summary>
-    public Guid ElevatorId { get; }
+    public int ElevatorId { get; }
 
     /// <summary>Gets the maximum capacity that was exceeded.</summary>
     public int MaxCapacity { get; }
@@ -16,7 +16,7 @@ public class CapacityExceededException : Exception
     /// </summary>
     /// <param name="elevatorId">The identifier of the elevator at capacity.</param>
     /// <param name="maxCapacity">The capacity limit that was reached.</param>
-    public CapacityExceededException(Guid elevatorId, int maxCapacity)
+    public CapacityExceededException(int elevatorId, int maxCapacity)
         : base($"Elevator {elevatorId} cannot exceed capacity of {maxCapacity}.")
     {
         ElevatorId = elevatorId;
