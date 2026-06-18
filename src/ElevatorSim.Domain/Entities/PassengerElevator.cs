@@ -5,7 +5,7 @@ using ElevatorSim.Domain.Interfaces;
 namespace ElevatorSim.Domain.Entities;
 
 /// <summary>
-/// An elevator that carries <see cref="Passenger"/> instances.
+/// An elevator that carries passengers.
 /// Enforces capacity, movement, and service-state rules on boarding.
 /// </summary>
 public class PassengerElevator : ElevatorBase
