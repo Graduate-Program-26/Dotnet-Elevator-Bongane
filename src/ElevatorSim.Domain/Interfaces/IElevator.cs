@@ -5,29 +5,8 @@ namespace ElevatorSim.Domain.Interfaces;
 /// <summary>
 /// Represents an elevator within the building simulation.
 /// </summary>
-public interface IElevator : IEntity
+public interface IElevator : IEntity, IElevatorCapacity, IElevatorMovement
 {
-    /// <summary>Gets the floor the elevator is currently on.</summary>
-    int CurrentFloorNumber { get; }
-
-    /// <summary>Gets the number of additional passengers the elevator can still accept.</summary>
-    int CurrentCapacity { get; }
-
-    /// <summary>Gets the maximum number of passengers this elevator can carry.</summary>
-    int MaxCapacity { get; }
-
-    /// <summary>Gets the current operational state of the elevator.</summary>
-    ElevatorState State { get; }
-
-    /// <summary>Gets the direction the elevator is currently travelling.</summary>
-    ElevatorDirection Direction { get; }
-
-    /// <summary>Gets the highest floor this elevator can reach.</summary>
-    int MaxFloor { get; }
-
-    /// <summary>Gets the lowest floor this elevator can reach.</summary>
-    int MinFloor { get; }
-    
     /// <summary>
     /// Transitions the elevator to the specified state.
     /// </summary>
