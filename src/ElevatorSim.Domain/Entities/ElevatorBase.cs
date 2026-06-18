@@ -11,8 +11,9 @@ namespace ElevatorSim.Domain.Entities;
 /// </summary>
 public class ElevatorBase : IElevator
 {
+    private static int s_nextId;
     /// <inheritdoc/>
-    public Guid Id { get; } = Guid.NewGuid();
+    public int Id { get; } = Interlocked.Increment(ref s_nextId);
 
     /// <inheritdoc/>
     public int CurrentFloorNumber { get; private set; }
@@ -66,6 +67,16 @@ public class ElevatorBase : IElevator
     /// <inheritdoc/>
     public void Board(int load)
     {
+        if (this.State == ElevatorState.Moving)
+        {
+            throw new ElevatorMovingException(this.Id);
+        }
+
+        if (this.State == ElevatorState.OutOfService)
+        {
+            throw new ElevatorOutOfServiceException(this.Id);
+        }
+        
         if (load > this.CurrentCapacity)
         {
             throw new CapacityExceededException(this.Id,this.CurrentCapacity);
